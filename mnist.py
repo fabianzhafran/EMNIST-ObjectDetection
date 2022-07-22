@@ -1,6 +1,7 @@
 # Code modified from: https://github.com/hsjeong5/MNIST-for-Numpy
 
 import numpy as np
+import pandas as pd
 from urllib import request
 import gzip
 import pickle
