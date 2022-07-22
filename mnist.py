@@ -14,7 +14,7 @@ filename = [
     ["test_labels", "t10k-labels-idx1-ubyte.gz"]
 ]
 SAVE_PATH = pathlib.Path("data/original_mnist")
-
+SAVE_PATH_EMNIST = pathlib.Path("data/emnist")
 
 def download_mnist():
     SAVE_PATH.mkdir(exist_ok=True, parents=True)
@@ -26,6 +26,27 @@ def download_mnist():
         print("Downloading "+name[1]+"...")
         request.urlretrieve(base_url+name[1], filepath)
 
+def extract_emnist():
+    emnist = {}
+    balanced_train = pd.read_csv('data/emnist/emnist-balanced-train.csv')
+    balanced_test = pd.read_csv('data/emnist/emnist-balanced-test.csv')
+
+    SAVE_PATH_EMNIST.mkdir(exist_ok=True, parents=True)
+    save_path = SAVE_PATH_EMNIST.joinpath("emnist.pkl")
+        
+    def convert_to_2d(df):
+        return df.reshape([28, 28])
+    
+    balanced_train_data = balanced_train.iloc[:, 1:].values
+    balanced_test_data = balanced_test.iloc[:, 1:].values
+
+    emnist['training_images'] = np.array(list(map(convert_to_2d, balanced_train_data)))
+    emnist['test_images'] = np.array(list(map(convert_to_2d, balanced_test_data)))
+    emnist['training_labels'] = balanced_train.iloc[:, 0].values
+    emnist['test_labels'] = balanced_test.iloc[:, 0].values
+
+    with open(save_path, 'wb') as f:
+        pickle.dump(emnist, f)
 
 def extract_mnist():
     save_path = SAVE_PATH.joinpath("mnist.pkl")
@@ -48,7 +69,6 @@ def extract_mnist():
     with open(save_path, 'wb') as f:
         pickle.dump(mnist, f)
 
-
 def load():
     download_mnist()
     extract_mnist()
@@ -56,6 +76,14 @@ def load():
     with open(dataset_path, 'rb') as f:
         mnist = pickle.load(f)
     X_train, Y_train, X_test, Y_test = mnist["training_images"], mnist["training_labels"], mnist["test_images"], mnist["test_labels"]
+    return X_train.reshape(-1, 28, 28), Y_train, X_test.reshape(-1, 28, 28), Y_test
+
+def load_emnist():
+    extract_emnist()
+    dataset_path = SAVE_PATH_EMNIST.joinpath("emnist.pkl")
+    with open(dataset_path, 'rb') as f:
+        emnist = pickle.load(f)
+    X_train, Y_train, X_test, Y_test = emnist["training_images"], emnist["training_labels"], emnist["test_images"], emnist["test_labels"]
     return X_train.reshape(-1, 28, 28), Y_train, X_test.reshape(-1, 28, 28), Y_test
 
 

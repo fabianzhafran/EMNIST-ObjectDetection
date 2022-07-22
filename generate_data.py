@@ -148,7 +148,7 @@ def generate_dataset(dirpath: pathlib.Path,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--base-path", default="data/mnist_detection"
+        "--base-path", default="data/emnist_detection"
     )
     parser.add_argument(
         "--imsize", default=300, type=int
@@ -169,7 +169,7 @@ if __name__ == "__main__":
         "--max-digits-per-image", default=20, type=int
     )
     args = parser.parse_args()
-    X_train, Y_train, X_test, Y_test = mnist.load()
+    X_train, Y_train, X_test, Y_test = mnist.load_emnist()
     for dataset, (X, Y) in zip(["train", "test"], [[X_train, Y_train], [X_test, Y_test]]):
         num_images = args.num_train_images if dataset == "train" else args.num_test_images
         generate_dataset(
