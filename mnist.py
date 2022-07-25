@@ -29,7 +29,10 @@ def download_mnist():
 
 def extract_emnist():
     emnist = {}
-    balanced_train = pd.read_csv('data/emnist/emnist-balanced-train.csv')
+    balanced_train_1 = pd.read_csv('data/emnist/emnist-balanced-train-1.csv')
+    balanced_train_2 = pd.read_csv('data/emnist/emnist-balanced-train-2.csv')
+    balanced_train_3 = pd.read_csv('data/emnist/emnist-balanced-train-3.csv')
+    balanced_train = pd.concat([balanced_train_1, balanced_train_2, balanced_train_3], ignore_index=True, sort=False)
     balanced_test = pd.read_csv('data/emnist/emnist-balanced-test.csv')
 
     SAVE_PATH_EMNIST.mkdir(exist_ok=True, parents=True)
