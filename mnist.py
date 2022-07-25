@@ -45,10 +45,10 @@ def extract_emnist():
     balanced_train_data = balanced_train.iloc[:, 1:].values
     balanced_test_data = balanced_test.iloc[:, 1:].values
 
-    emnist['training_images'] = np.array(list(map(convert_to_2d, balanced_train_data)))
-    emnist['test_images'] = np.array(list(map(convert_to_2d, balanced_test_data)))
-    emnist['training_labels'] = balanced_train.iloc[:, 0].values
-    emnist['test_labels'] = balanced_test.iloc[:, 0].values
+    emnist['training_images'] = np.array(list(map(convert_to_2d, balanced_train_data))).astype('uint8')
+    emnist['test_images'] = np.array(list(map(convert_to_2d, balanced_test_data))).astype('uint8')
+    emnist['training_labels'] = balanced_train.iloc[:, 0].values.astype('uint8')
+    emnist['test_labels'] = balanced_test.iloc[:, 0].values.astype('uint8')
 
     with open(save_path, 'wb') as f:
         pickle.dump(emnist, f)
