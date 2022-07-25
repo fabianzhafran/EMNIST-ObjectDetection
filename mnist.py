@@ -33,6 +33,7 @@ def extract_emnist():
     balanced_train_2 = pd.read_csv('data/emnist/emnist-balanced-train-2.csv')
     balanced_train_3 = pd.read_csv('data/emnist/emnist-balanced-train-3.csv')
     balanced_train = pd.concat([balanced_train_1, balanced_train_2, balanced_train_3], ignore_index=True, sort=False)
+    balanced_train.drop(['Unnamed: 0'], axis=1, inplace=True)
     balanced_test = pd.read_csv('data/emnist/emnist-balanced-test.csv')
 
     SAVE_PATH_EMNIST.mkdir(exist_ok=True, parents=True)
