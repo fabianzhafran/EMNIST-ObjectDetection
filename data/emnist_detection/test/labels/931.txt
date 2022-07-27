@@ -1,0 +1,2 @@
+label,xmin,ymin,xmax,ymax
+32,215,7,284,88
